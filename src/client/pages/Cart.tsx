@@ -60,7 +60,7 @@ export const Cart: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={4}>Order price:</td>
-                        <td className={bem('OrderPrice')}>${total}</td>
+                        <td className={bem('OrderPrice')} data-testid='total'>${total}</td>
                     </tr>
                 </tfoot>
             </table>
