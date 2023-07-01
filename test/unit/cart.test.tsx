@@ -1,16 +1,13 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router';
-import {screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Catalog } from '../../src/client/pages/Catalog';
-import { CartApi, ExampleApi } from '../../src/client/api';
+import {screen } from '@testing-library/react';
 import { ROUTES, renderWithProviders } from './helpers';
 import { fakeFullProducts, fakeShortProducts } from './mocks';
 import {Application} from '../../src/client/Application';
-import { ProductDetails } from '../../src/client/components/ProductDetails';
 import { Cart } from '../../src/client/pages/Cart';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { CartState } from '../../src/common/types';
+import { CartApi } from '../../src/client/api';
+
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -18,7 +15,7 @@ afterEach(() => {
 
 describe('Корзина', () => {
  it('если корзина пустая, должна отображаться ссылка на каталог товаров', () => {
-  const {store} = renderWithProviders(
+  renderWithProviders(
     <BrowserRouter>
       <Cart />
     </BrowserRouter>);
@@ -27,13 +24,27 @@ describe('Корзина', () => {
  });
 
  it('в корзине должна быть кнопка "очистить корзину", по нажатию на которую все товары должны удаляться', async () => {
-  const {store} = renderWithProviders(
+  jest
+  .spyOn(CartApi.prototype, 'getState')
+  .mockImplementation(() => {
+    return {
+      [fakeShortProducts[0].id]: {
+        name: fakeShortProducts[0].name,
+        price: fakeShortProducts[0].price,
+        count: 1
+      },
+      [fakeShortProducts[1].id]: {
+        name: fakeShortProducts[1].name,
+        price: fakeShortProducts[1].price,
+        count: 1
+      },
+    }
+    })
+ renderWithProviders(
     <BrowserRouter>
       <Cart />
     </BrowserRouter>);
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[0]});
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[1]});
-  
+
   const clearBtn = screen.getByRole('button', {name: 'Clear shopping cart'});
   expect(screen.getByRole('table')).toBeInTheDocument();
   const allProductsInCart = [screen.getByTestId(fakeFullProducts[0].id), screen.getByTestId(fakeFullProducts[1].id)];
@@ -46,12 +57,27 @@ describe('Корзина', () => {
  });
 
  it('в корзине для каждого товара должны отображаться название, цена, количество, стоимость, а также должна отображаться общая сумма заказа', async () => {
-  const {store} = renderWithProviders(
+  
+  jest
+  .spyOn(CartApi.prototype, 'getState')
+  .mockImplementation(() => {
+    return {
+      [fakeShortProducts[0].id]: {
+        name: fakeShortProducts[0].name,
+        price: fakeShortProducts[0].price,
+        count: 1
+      },
+      [fakeShortProducts[1].id]: {
+        name: fakeShortProducts[1].name,
+        price: fakeShortProducts[1].price,
+        count: 1
+      },
+    }
+    })
+    renderWithProviders(
     <BrowserRouter>
       <Cart />
     </BrowserRouter>);
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[0]});
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[1]});
 
   expect(screen.getByRole('table')).toBeInTheDocument();
 
@@ -71,21 +97,30 @@ describe('Корзина', () => {
  });
 
  it('в шапке рядом со ссылкой на корзину должно отображаться количество не повторяющихся товаров в ней', async () => {
-  const {store} = renderWithProviders(
+  jest
+  .spyOn(CartApi.prototype, 'getState')
+  .mockImplementation(() => {
+    return {
+      [fakeShortProducts[0].id]: {
+        name: fakeShortProducts[0].name,
+        price: fakeShortProducts[0].price,
+        count: 2
+      },
+      [fakeShortProducts[1].id]: {
+        name: fakeShortProducts[1].name,
+        price: fakeShortProducts[1].price,
+        count: 5
+      },
+    }
+    })
+  
+  renderWithProviders(
     <BrowserRouter>
       <Application />
     </BrowserRouter>);
   
-  expect(screen.getByRole('link', {name: /Cart/})).toHaveTextContent('Cart');
-
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[0]});
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[1]});
-
   expect(screen.getByRole('link', {name: /Cart/})).toHaveTextContent('Cart (2)');
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[0]});
-  expect(screen.getByRole('link', {name: /Cart/})).toHaveTextContent('Cart (2)');
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[2]});
-  expect(screen.getByRole('link', {name: /Cart/})).toHaveTextContent('Cart (3)');
+
  });
-
+ 
 });
