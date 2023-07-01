@@ -1,6 +1,5 @@
 import React from 'react';
 import { MemoryRouter } from "react-router-dom";
-import {describe, it, expect, jest} from '@jest/globals'
 import {Application} from '../../src/client/Application';
 import { ROUTES, STATIC_PAGES_CONTENT, renderWithProviders } from './helpers';
 import axios from "axios";
