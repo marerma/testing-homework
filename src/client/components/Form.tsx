@@ -60,7 +60,8 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                     disabled={sent}
                     className={bem("Field", { type: 'name' }, [getControlClass(nameIsValid, submitted)])}
                     autoComplete="off"
-                    onChange={onChangeName} />
+                    onChange={onChangeName}
+                    data-testid='f-name' />
                 <div className="invalid-feedback">Please provide your name</div>
             </div>
             <div className="mb-3">
@@ -70,7 +71,8 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                     type="text"
                     disabled={sent}
                     className={bem("Field", { type: 'phone' }, [getControlClass(phoneIsValid, submitted)] )}
-                    onChange={onChangePhone} />
+                    onChange={onChangePhone}
+                    data-testid='f-phone'  />
                 <div className="invalid-feedback">Please provide a valid phone</div>
             </div>
             <div className="mb-3">
@@ -80,7 +82,8 @@ export const Form: React.FC<FormProps> = ({ onSubmit }) => {
                     disabled={sent}
                     rows={3}
                     className={bem("Field", { type: 'address' }, [getControlClass(addressIsValid, submitted)] )}
-                    onChange={onChangeAddress}></textarea>
+                    onChange={onChangeAddress}
+                    data-testid='f-address'  ></textarea>
                 <div className="invalid-feedback">Please provide a valid address</div>
             </div>
 
