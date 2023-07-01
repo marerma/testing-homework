@@ -2,9 +2,9 @@ import React from 'react';
 import { MemoryRouter } from 'react-router';
 import {screen } from '@testing-library/react';
 import { Catalog } from '../../src/client/pages/Catalog';
-import { ExampleApi } from '../../src/client/api';
+import { CartApi, ExampleApi } from '../../src/client/api';
 import { ROUTES, renderWithProviders } from './helpers';
-import { fakeFullProducts, fakeShortProducts } from './mocks';
+import { fakeShortProducts } from './mocks';
 
 
 
@@ -68,20 +68,37 @@ describe('Каталог', () => {
   });
 
   it('если товар уже добавлен в корзину, на странице каталога должно отображаться сообщение об этом', async () => {
-    const id = 1;
-    const index = id - 1;
+    jest
+    .spyOn(ExampleApi.prototype, 'getProducts')
+    .mockImplementation(() => {
+      return Promise.resolve({
+        data: fakeShortProducts,
+        status: 200,
+        statusText: 'Ok',
+        headers: {},
+        config: {},
+      })
+    })
+    jest
+      .spyOn(CartApi.prototype, 'getState')
+      .mockImplementation(() => {
+        return {
+          [fakeShortProducts[0].id]: {
+            name: fakeShortProducts[0].name,
+            price: fakeShortProducts[0].price,
+            count: 1
+          }
+        }
+    })
 
-    const {store} = renderWithProviders(
+    renderWithProviders(
       <MemoryRouter initialEntries={[ROUTES.catalog]}>
           <Catalog />
       </MemoryRouter>)
 
-  const productOne = await (screen.findAllByTestId(fakeShortProducts[index].id));
+  const productOne = await (screen.findAllByTestId(fakeShortProducts[0].id));
   const productInfo = productOne[1];
-  expect(productInfo.querySelector('.CartBadge')).toBeNull();
-  store.dispatch({type: 'ADD_TO_CART', product: fakeFullProducts[index]});
   expect((await screen.findByText('Item in cart'))).toBeVisible();
   expect(productInfo.querySelector('.CartBadge')).toHaveTextContent('Item in cart')
-
 })
 });
