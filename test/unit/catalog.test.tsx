@@ -4,7 +4,7 @@ import {screen } from '@testing-library/react';
 import { Catalog } from '../../src/client/pages/Catalog';
 import { CartApi, ExampleApi } from '../../src/client/api';
 import { ROUTES, renderWithProviders } from './helpers';
-import { fakeShortProducts } from './mocks';
+import { fakeShortProducts } from '../mocks';
 
 
 

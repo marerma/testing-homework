@@ -1,7 +1,7 @@
 import React from "react";
 import { renderWithProviders } from "./helpers";
 import { Form } from '../../src/client/components/Form';
-import {screen, waitFor } from '@testing-library/react';
+import {screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckoutFormData } from "../../src/common/types";
 
@@ -70,7 +70,7 @@ describe('Форма на странице корзины', () => {
     expect(onSubmit).not.toBeCalled() 
     expect(screen.getByText('Please provide your name')).toBeVisible();
   });
-  it('если не ввести имя, появляется ошибка', async () => {
+  it('если не ввести адрес, появляется ошибка', async () => {
     const user = userEvent.setup();
 
     const onSubmit = jest.fn((data: CheckoutFormData)=> data)  

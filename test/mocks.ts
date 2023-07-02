@@ -1,4 +1,4 @@
-import { ProductShortInfo, Product } from "../../src/common/types";
+import { ProductShortInfo, Product } from "../src/common/types";
 
 export const fakeShortProducts: ProductShortInfo[] = [
   {
@@ -44,3 +44,18 @@ export const fakeFullProducts: Product[] = [
     material: 'wood',
   },
 ]
+
+
+export const fakeCartContent = {
+  [fakeShortProducts[0].id]: {
+    name: fakeShortProducts[0].name,
+    price: fakeShortProducts[0].price,
+    count: 1
+  },
+  [fakeShortProducts[1].id]: {
+    name: fakeShortProducts[1].name,
+    price: fakeShortProducts[1].price,
+    count: 1
+  },
+};
+

@@ -30,11 +30,6 @@ export const findLinkByName = (linkName: string | RegExp) => {
    return link
 }
 
-export const setupTestStore = () => {
-  const store = initStore(new ExampleApi(BASENAME), new CartApi());
-  return store;
-}
-
 export const STATIC_PAGES_CONTENT = {
   [ROUTES.home]: 'Sed voluptatum quis voluptates laudantium incidunt laudantium. Illo non quos eos vel ipsa. Explicabo itaque est optio neque rerum provident enim qui sed. Corrupti commodi voluptatem vero soluta hic.',
   [ROUTES.devilery]: 'Deserunt occaecati tempora. Qui occaecati est aliquam. Enim qui nulla ipsam. Incidunt impedit enim consequuntur amet at consequuntur vero.',
